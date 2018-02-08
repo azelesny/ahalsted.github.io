@@ -96,10 +96,39 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+#map {
+  height:600px;
+  width: 80%;
+  display: inline-block;
+}
+#panel{
+  width:16%;
+  padding: 20px;
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+  line-height: 42px;
+}
+h1{
+  font-size: 2em;
+  vertical-align: middle;
+}
 
+.leaflet-popup-content p{
+  margin: 0.2em 0;
+}
 
+.range-slider {
+    width: 50%;
+}
 
+#forward {
+    float: right;
+}
 
+#reverse {
+    float: left;
+}
 
 
 

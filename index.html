@@ -2,14 +2,27 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="lib/leaflet.css">
 		<title>An empty page</title>
 
 	</head>
 
 	<body>
 
-		<div id="mydiv"></div>
+		<div id="map"></div>
+		<div id="panel">
+			<h1></h1>	
+		</div>
+		<script type="text/javascript" src="lib/leaflet-src.js"></script>
 		<script type="text/javascript" src="lib/jquery-3.3.1.min.js"></script>
 		<script type="text/javascript" src="js/main.js"></script>
 	</body>
