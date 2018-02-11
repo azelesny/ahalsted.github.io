@@ -20,12 +20,24 @@ function calcPropRadius(attValue) {
   return radius;
 };
 
+//creates popup to be used in fuctions pointToLayer and updatePropSymbols
+function createPopup(properties, attribute, layer, radius){
+  //build popup information
+  var popupContent = "<p><b>City:</b> " + properties.City + "</p>";
+  var year = attribute.split("_")[1];
+  popupContent += "<p><b>Population in " + year + ":</b> " + properties[attribute] + " million</p>";
+  //bind popupContent to layer and offset a little
+  layer.bindPopup(popupContent, {
+        offset: new L.Point(0,-radius),
+        });
+}
+
 //create layer with circle radius prop symbols and popup information
 function pointToLayer(feature, latlng, attributes){
   //assign current attribute to first index of array
   var attribute = attributes[0];
   //create marker options
-  var geojsonMarkerOptions = {
+  var options = {
       fillColor: "#ff7800",
       color: "#000",
       weight: 1,
@@ -35,18 +47,10 @@ function pointToLayer(feature, latlng, attributes){
   //determine value for each feature
   var attValue = Number(feature.properties[attribute]);
   //change circle radius based on population
-  geojsonMarkerOptions.radius = calcPropRadius(attValue);
+  options.radius = calcPropRadius(attValue);
   //return created markers
-  var layer = L.circleMarker(latlng, geojsonMarkerOptions);
-  //build popup information
-  var popupContent = "<p><b>City:</b> " + feature.properties.City + "</p>";
-  var year = attribute.split("_")[1];
-  popupContent += "<p><b>Population in " + year + ":</b> " + feature.properties[attribute] + " million</p>";
-  //bind popupContent to layer and offset a little
-  layer.bindPopup(popupContent, {
-        offset: new L.Point(0,-geojsonMarkerOptions.radius),
-        closeButton: false
-    });
+  var layer = L.circleMarker(latlng, options);
+  createPopup(feature.properties, attribute, layer, options.radius);
   //creating tooltip using mouse over
   layer.on({
         mouseover: function(){
@@ -78,41 +82,44 @@ function updatePropSymbols(map, attribute){
       //update each feature's radius based on new attribute values
       var radius = calcPropRadius(props[attribute]);
       layer.setRadius(radius);
-
-      //add city to popup content string
-      var popupContent = "<p><b>City:</b> " + props.City + "</p>";
-
-      //add formatted attribute to panel content string
-      var year = attribute.split("_")[1];
-      popupContent += "<p><b>Population in " + year + ":</b> " + props[attribute] + " million</p>";
-
-      //replace the layer popup
-      layer.bindPopup(popupContent, {
-          offset: new L.Point(0,-radius)
-      });
+      //add new popup to each circleMarker
+      createPopup(props, attribute, layer, radius);
     };
   });
 };
 
-//Create sequence controls
+//Sequence controls that are laid over map
 function createSequenceControls(map, attributes){
-    //create range input element (slider)
-    $('#panel').append('<input class="range-slider" type="range">');
-    //set slider attributes
-    $('.range-slider').attr({
-        max: 6,
-        min: 0,
-        value: 0,
-        step: 1
-    });
-    //add skip buttons forward and reverse
-    $('#panel').append('<button class="skip" id="reverse">Reverse</button>');
-    $('#panel').append('<button class="skip" id="forward">Skip</button>');
-    $('#reverse').html('<img src="img/reverse.png">');
-    $('#forward').html('<img src="img/forward.png">');
-    var startYear = (attributes[0].toString()).split("_")[1];
-    $('h1').text(startYear);
-    //creativecommons icons by Dániel Aczél from the Noun Project
+    var SequenceControl = L.Control.extend({
+        options: {
+            position: 'bottomleft'
+        },
+
+        onAdd: function (map) {
+            // create the control container div with a particular class name
+            var container = L.DomUtil.create('div', 'sequence-control-container');
+            //create range input element (slider)
+            $(container).append('<input class="range-slider" type="range" max="6" min="0" value="0" step="1">');
+            //add skip buttons
+            $(container).append('<button class="skip" id="reverse" title="Reverse"><img src="img/reverse.png"> </button>');
+            $(container).append('<button class="skip" id="forward" title="Forward"><img src="img/forward.png"></button>');
+            //kill any mouse event listeners on the map
+            $(container).on('mousedown mouseup dblclick click', function(e){
+                L.DomEvent.stopPropagation(e);
+            });
+            //stop map dragging on slider drag
+            $(container).on('mouseover', function(){
+              map.dragging.disable();
+            });
+            //enable map dragging when mouse is not in slider container
+            $(container).on('mouseout', function(){
+              map.dragging.enable();
+            });
+            return container;
+        }//end of onAdd: function
+    });//end of Control.extend
+
+    map.addControl(new SequenceControl());
     //click listener for buttons
     $('.skip').click(function(){
       //get the old index value
@@ -122,15 +129,13 @@ function createSequenceControls(map, attributes){
           //if past the last attribute, wrap around to first attribute
           index = index > 6 ? 0 : index;
           updatePropSymbols(map, attributes[index]);
-          var year = (attributes[index].toString()).split("_")[1];
-          $('h1').text(year);
+          updateLegend(map, attributes[index]);
       } else if ($(this).attr('id') == 'reverse'){
           index--;
           //if past the first attribute, wrap around to last attribute
           index = index < 0 ? 6 : index;
           updatePropSymbols(map, attributes[index]);
-          var year = (attributes[index].toString()).split("_")[1];
-          $('h1').text(year);
+          updateLegend(map, attributes[index]);
       };
       //update slider
       $('.range-slider').val(index);
@@ -139,13 +144,98 @@ function createSequenceControls(map, attributes){
     //input listener for slider
     $('.range-slider').on('input', function(){
         var index = $(this).val();
-        var year = (attributes[index].toString()).split("_")[1];
         updatePropSymbols(map, attributes[index]);
-        $('h1').text(year);
+        updateLegend(map, attributes[index]);
     });
+};//end of function createSequenceControls
+
+//create temporal legend
+function createLegend(map, attributes){
+  var LegendControl = L.Control.extend({
+        options: {
+            position: 'bottomright'
+        },
+
+        onAdd: function (map) {
+            // create the control container
+            var container = L.DomUtil.create('div', 'legend-control-container');
+            //add temporal legend div to container
+            $(container).append('<div id="temporal-legend">')
+            //start attribute legend svg string
+            var svg = '<svg id="attribute-legend" width="160px" height="60px">';
+            //array of circle names to base loop on
+            var circles = {
+            max: 20,
+            mean: 40,
+            min: 60
+            };
+            //loop to add each circle and text to svg string
+            for (var circle in circles){
+            //circle string
+              svg += '<circle class="legend-circle" id="' + circle + '" fill="#F47821" fill-opacity="0.8" stroke="#000000" cx="30"/>';
+            //text string
+              svg += '<text id="' + circle + '-text" x="65" y="' + circles[circle] + '"></text>';
+            };
+            //close svg string
+            svg += "</svg>";
+            //add attribute legend svg to container
+            $(container).append(svg);
+            return container;
+        }
+    });
+    map.addControl(new LegendControl());
+    //assign current attribute to first index of array, starting legend text
+    updateLegend(map, attributes[0]);
+};//end of createLegend
+
+//update text and circles in legend
+function updateLegend(map, attribute){
+    var year = attribute.split("_")[1];
+    var legendContent = "Population in " + year;
+    $('#temporal-legend').html(legendContent);
+    var circleValues = getCircleValues(map, attribute);
+    for (var key in circleValues){
+        //get the radius
+        var radius = calcPropRadius(circleValues[key]);
+        //Assign the cy and r attributes
+        $('#'+key).attr({
+            cy: 59 - radius,
+            r: radius
+        });
+        $('#'+key+'-text').text(Math.round(circleValues[key]*100)/100 + " million");
+    };
 };
 
-//loop through attributes
+//Calculate the max, mean, and min values for a given attribute
+function getCircleValues(map, attribute){
+    //start with min at highest possible and max at lowest possible number
+    var min = Infinity,
+        max = -Infinity;
+    map.eachLayer(function(layer){
+        //get the attribute value
+        if (layer.feature){
+            var attributeValue = Number(layer.feature.properties[attribute]);
+            //test for min
+            if (attributeValue < min){
+                min = attributeValue;
+            };
+            //test for max
+            if (attributeValue > max){
+                max = attributeValue;
+            };
+        };
+    });
+    //set mean
+    var mean = (max + min) / 2;
+    //return values as an object
+    return {
+        max: max,
+        mean: mean,
+        min: min
+    };
+};
+
+//loop through attributes data
 function processData(data){
   var attributes =[]; //start with empty array
   var properties = data.features[0].properties;
@@ -157,8 +247,6 @@ function processData(data){
   return attributes;
 };
 
-
-
 //function to retrieve the data and place it on the map
 function getData(map){
     //load the data
@@ -167,10 +255,10 @@ function getData(map){
         success: function(response){
           //create an attributes array
           var attributes = processData(response);
-
           //call functions on map
           createPropSymbols(response, map, attributes);
           createSequenceControls(map, attributes);
+          createLegend(map, attributes);
         }
     });
 };
@@ -182,12 +270,11 @@ function createMap(){
         center: [20, 0],
         zoom: 2
     });
-
     //add OSM base tilelayer
     L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'+' | Buttons by Dániel Aczél from the Noun Project'
     }).addTo(map);
-
+    //creativecommons icons by Dániel Aczél from the Noun Project
     //call getData function
     getData(map);
 };

@@ -98,17 +98,17 @@ textarea {
    ========================================================================== */
 #map {
   height:600px;
-  width: 80%;
+  width: 100%;
   display: inline-block;
 }
-#panel{
+/* #panel{
   width:16%;
   padding: 20px;
   display: inline-block;
   vertical-align: top;
   text-align: center;
   line-height: 42px;
-}
+} */
 h1{
   font-size: 2em;
   vertical-align: middle;
@@ -117,30 +117,129 @@ h1{
 .leaflet-popup-content p{
   margin: 0.2em 0;
 }
+.sequence-control-container{
+    width: 350px;
+    height: 30px;
+    background-color: rgba(255,255,255,0.8);
+    padding: 10px;
+    line-height: 45px;
+    text-align: center;
+    border: solid gray 1px;
+}
 
 .range-slider {
-    width: 50%;
+    width: 200px;
 }
 
 #forward {
     float: right;
+    background-color:#FFFFFF;
 }
 
 #reverse {
     float: left;
+    background-color:#FFFFFF;
 }
 
+.legend-control-container{
+  padding: 10px;
+  background-color: rgba(255,255,255,0.8);
+  line-height: 2em;
+  text-align:center;
+  border: solid gray 1px;
+}
 
-
-
-
-
-
-
-
-
-
-
+/* ==========================================================================
+   Slider
+   ========================================================================== */
+   /* input[type=range] {
+     -webkit-appearance: none;
+     margin: 18px 0;
+     width: 200px;
+   }
+   input[type=range]:focus {
+     outline: none;
+   }
+   input[type=range]::-webkit-slider-runnable-track {
+     width: 200px;
+     height: 8.4px;
+     cursor: pointer;
+     animate: 0.2s;
+     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+     background: #3071a9;
+     border-radius: 1.3px;
+     border: 0.2px solid #010101;
+   }
+   input[type=range]::-webkit-slider-thumb {
+     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+     border: 1px solid #000000;
+     height: 36px;
+     width: 16px;
+     border-radius: 3px;
+     background: #ffffff;
+     cursor: pointer;
+     -webkit-appearance: none;
+     margin-top: -14px;
+   }
+   input[type=range]:focus::-webkit-slider-runnable-track {
+     background: #367ebd;
+   }
+   input[type=range]::-moz-range-track {
+     width: 100%;
+     height: 8.4px;
+     cursor: pointer;
+     animate: 0.2s;
+     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+     background: #3071a9;
+     border-radius: 1.3px;
+     border: 0.2px solid #010101;
+   }
+   input[type=range]::-moz-range-thumb {
+     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+     border: 1px solid #000000;
+     height: 36px;
+     width: 16px;
+     border-radius: 3px;
+     background: #ffffff;
+     cursor: pointer;
+   }
+   input[type=range]::-ms-track {
+     width: 100%;
+     height: 8.4px;
+     cursor: pointer;
+     animate: 0.2s;
+     background: transparent;
+     border-color: transparent;
+     border-width: 16px 0;
+     color: transparent;
+   }
+   input[type=range]::-ms-fill-lower {
+     background: #2a6495;
+     border: 0.2px solid #010101;
+     border-radius: 2.6px;
+     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+   }
+   input[type=range]::-ms-fill-upper {
+     background: #3071a9;
+     border: 0.2px solid #010101;
+     border-radius: 2.6px;
+     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+   }
+   input[type=range]::-ms-thumb {
+     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+     border: 1px solid #000000;
+     height: 36px;
+     width: 16px;
+     border-radius: 3px;
+     background: #ffffff;
+     cursor: pointer;
+   }
+   input[type=range]:focus::-ms-fill-lower {
+     background: #3071a9;
+   }
+   input[type=range]:focus::-ms-fill-upper {
+     background: #367ebd;
+   } */
 
 /* ==========================================================================
    Helper classes
