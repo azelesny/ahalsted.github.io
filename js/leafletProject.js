@@ -187,7 +187,7 @@ function createLegend(map, attributes){
             //add temporal legend div to container
             $(container).append('<div id="temporal-legend">')
             //start attribute legend svg string
-            var svg = '<svg id="attribute-legend" width="180px" height="80px">';
+            var svg = '<svg id="attribute-legend" width="160px" height="80px">';
             //array of circle names to base loop on
             var circles = {
             max: 40,

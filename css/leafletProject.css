@@ -101,23 +101,27 @@ body{
   margin: 0;
 }
 html, body, #africa-map {
-  height:90%;
+  height:100%;
   width: 100%;
   display: inline-block;
 }
 
 #header{
-  z-index: 3;
+  position:fixed;
+  left: 30%;
+  background-color: rgba(255,255,255,0.8);
+  display: inline-block;
   opacity: .9;
   text-align: center;
-  height: 10%;
+  border-radius: 10px;
+  padding: 5px;
 }
-
 h1{
-  font-size: 1.5em;
+  font-family: Helvetica;
+  font-size: 2em;
 }
 h2{
-  font-size: 1em;
+  font-size: 1.5em;
 }
 
 .leaflet-popup-content p{
