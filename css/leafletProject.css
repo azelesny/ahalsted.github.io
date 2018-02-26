@@ -111,22 +111,39 @@ html, body, #africa-map {
   left: 30%;
   background-color: rgba(255,255,255,0.8);
   display: inline-block;
-  opacity: .9;
+  opacity: .98;
   text-align: center;
   border-radius: 10px;
   padding: 5px;
+  line-height: 2px;
 }
 h1{
-  font-family: Helvetica;
+  font-family: 'Playfair Display', serif;
   font-size: 2em;
 }
 h2{
+  font-family: 'Playfair Display', serif;
   font-size: 1.5em;
+  display: inline;
+}
+a.button {
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 50%;
+  border: none;
+  background: #e5e5e5;
+  padding: 8px 12px;
+  text-decoration: none;
+  float: right;
+  font-size: .75em;
+  color: #000000;
 }
 
 .leaflet-popup-content p{
   margin: 0.2em 0;
   border-radius: 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5em;
 }
 .sequence-control-container{
     width: 350px;
@@ -160,6 +177,8 @@ h2{
   text-align:center;
   border: solid gray 1px;
   border-radius: 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5em;
 }
 
 

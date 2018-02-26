@@ -1,22 +1,11 @@
 /* Map of GeoJSON data from World Bank Open Data */
 
 //calculate the radius of each proportional symbol
-// function calcPropRadius(attValue) {
-//   //scale factor to adjust symbol size evenly
-//   var scaleFactor = 80;
-//   //area based on attribute value and scale factor
-//   var area = attValue * scaleFactor;
-//   //radius calculated based on area
-//   var radius = Math.sqrt(area/Math.PI);
-//   return radius;
-// };
-
-//calculate the radius of each proportional symbol
 function calcPropRadius(attValue) {
   if (attValue <1){
-    radius = 5;
+    radius = 7;
   } else{
-    scaleFactor = 80;
+    scaleFactor = 95;
     var area = attValue * scaleFactor;
     //radius calculated based on area
     var radius = Math.sqrt(area/Math.PI);
@@ -29,11 +18,13 @@ function createPopup(properties, attribute, layer, radius){
   //build popup information
   var popupContent = "<p><b>Nation:</b> " + properties.name + "</p>";
   var year = attribute.split("_")[1];
+
   if (properties[attribute] == "na"){
     popupContent += "<p><b>Internet Access in " + year + ":</b> " + "Not available</p>";
   } else {
-  //var percentage = properties[attribute].toFixed(2);
-  popupContent += "<p><b>Internet Access in " + year + ":</b> " + properties[attribute] + "%</p>";
+    var numberDecimals = properties[attribute];
+    var roundNumber = numberDecimals.toFixed(2);
+    popupContent += "<p><b>Internet Access in " + year + ":</b> " + roundNumber + "%</p>";
   }
   //bind popupContent to layer and offset a little
   layer.bindPopup(popupContent, {
@@ -47,14 +38,14 @@ function pointToLayer(feature, latlng, attributes){
   var attribute = attributes[0];
   //create marker options
   var options = {
-      fillColor: "#3D9970",
+      fillColor: "#007a4d",
       color: "#000",
       weight: 1,
       opacity: 1,
       fillOpacity: 0.8
   };
   if (attribute == 'na' ){
-    return options.radius = 5;
+    return options.radius = 7;
   } else {
   //determine value for each feature
   var attValue = Number(feature.properties[attribute]);
@@ -92,7 +83,7 @@ function updatePropSymbols(map, attribute){
       //access feature properties
       var props = layer.feature.properties;
       if (props[attribute] == 'na'){
-        var radius = 5;
+        var radius = 7;
         var naMarker= {
           fillColor: "#808080"
           }
@@ -101,7 +92,7 @@ function updatePropSymbols(map, attribute){
         //update each feature's radius based on new attribute values
         var radius = calcPropRadius(props[attribute]);
         var backToMarker = {
-          fillColor: "#3D9970"
+          fillColor: "#007a4d"
         }
         layer.setStyle(backToMarker);
       };
@@ -187,19 +178,19 @@ function createLegend(map, attributes){
             //add temporal legend div to container
             $(container).append('<div id="temporal-legend">')
             //start attribute legend svg string
-            var svg = '<svg id="attribute-legend" width="160px" height="80px">';
+            var svg = '<svg id="attribute-legend" width="180px" height="100px">';
             //array of circle names to base loop on
             var circles = {
             max: 40,
-            mean: 55,
-            min: 70
+            mean: 60,
+            min: 80
             };
             //loop to add each circle and text to svg string
             for (var circle in circles){
             //circle string
-              svg += '<circle class="legend-circle" id="' + circle + '" fill="#3D9970" fill-opacity="0.8" stroke="#000000" cx="40"/>';
+              svg += '<circle class="legend-circle" id="' + circle + '" fill="#007a4d" fill-opacity="0.8" stroke="#000000" cx="60"/>';
             //text string
-              svg += '<text id="' + circle + '-text" x="100" y="' + circles[circle] + '"></text>';
+              svg += '<text id="' + circle + '-text" x="110" y="' + circles[circle] + '"></text>';
             };
             //close svg string
             svg += "</svg>";
@@ -224,7 +215,7 @@ function updateLegend(map, attribute){
         var radius = calcPropRadius(circleValues[key]);
         //Assign the cy and r attributes
         $('#'+key).attr({
-            cy: 78 - radius,
+            cy: 85 - radius,
             r: radius
         });
         if (circleValues[key]<1){
@@ -298,27 +289,37 @@ function createMap(){
     var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'}),
 
+        high = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+          id: 'mapbox.high-contrast',
+          accessToken: 'pk.eyJ1IjoiYXplbGVzbnl3aXNjIiwiYSI6ImNpc2c1cGViczAxcDIyeXZvZWp0OGFwNWQifQ.lgxgyzCrnpDPitrPWBS9jg'}),
+
         hot = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'});
-      //create the map
+      //create the map, limit zoom and panning
       var map = L.map('africa-map', {
           center: [-3.5, 20],
           zoom: 4,
-          layers: [osm]
+          minZoom: 4,
+          maxZoom: 7,
+          maxBounds: [[35.023974, 61.357810],[-40.916196, -30.378981]],
+          layers: [high]
       });
 
     //call getData function
     getData(map);
 
     var baseLayers={
+      "High Contrast" : high,
       "Open Street Map" : osm,
-      "Humanitarian" : hot
+      "Humanitarian" : hot,
     };
     //add control for layers
     L.control.layers(baseLayers).addTo(map);
     //add additional attributions
     attribution = "Source: International Telecommunication Union, World Telecommunication/ICT Development Report and database. | icons by Dániel Aczél from the Noun Project"
     $('.leaflet-control-attribution').append(attribution);
+
 };
 
 
