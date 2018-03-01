@@ -101,7 +101,7 @@ body{
   margin: 0;
 }
 html, body, #africa-map {
-  height:100%;
+  height:98%;
   width: 100%;
   display: inline-block;
 }
@@ -177,10 +177,93 @@ a.button {
   text-align:center;
   border: solid gray 1px;
   border-radius: 10px;
-  font-family: 'Playfair Display', serif;
+  font-family: "Georgia", sans-serif;
   font-size: 1.5em;
 }
 
+#information {
+  padding: 100px;
+  font-family: "Georgia", sans-serif;
+}
+
+#footnote{
+  padding: 100px;
+  font-size: 1em;
+  padding-top: 100px;
+}
+
+section {
+  position: relative;
+  width: 100%;
+  height: 7%;
+  color: #000000;
+}
+section::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  content: '';
+  width: 100%;
+  height: 80%;
+}
+.bounce a {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  z-index: 2;
+  display: inline-block;
+  -webkit-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  color: #000000;
+  font : normal 400 20px/1 'Georgia', sans-serif;
+  letter-spacing: .1em;
+  text-decoration: none;
+  transition: opacity .3s;
+}
+.bounce a:hover {
+  opacity: .5;
+}
+
+/* #section04 a {
+  padding-top: 60px;
+} */
+#scroll a span {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin-left: -12px;
+  border-left: 1px solid #000000;
+  border-bottom: 1px solid #000000;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  -webkit-animation: sdb04 2s infinite;
+  animation: sdb04 2s infinite;
+  box-sizing: border-box;
+}
+@-webkit-keyframes sdb04 {
+  0% {
+    -webkit-transform: rotate(-45deg) translate(0, 0);
+  }
+  20% {
+    -webkit-transform: rotate(-45deg) translate(-10px, 10px);
+  }
+  40% {
+    -webkit-transform: rotate(-45deg) translate(0, 0);
+  }
+}
+@keyframes sdb04 {
+  0% {
+    transform: rotate(-45deg) translate(0, 0);
+  }
+  20% {
+    transform: rotate(-45deg) translate(-10px, 10px);
+  }
+  40% {
+    transform: rotate(-45deg) translate(0, 0);
+  }
+}
 
 /* ==========================================================================
    Helper classes
