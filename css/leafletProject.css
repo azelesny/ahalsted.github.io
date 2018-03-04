@@ -101,6 +101,7 @@ body{
   margin: 0;
 }
 html, body, #africa-map {
+  /* leave room for scroll bounce */
   height:98%;
   width: 100%;
   display: inline-block;
@@ -126,6 +127,7 @@ h2{
   font-size: 1.5em;
   display: inline;
 }
+/* information button */
 a.button {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -189,9 +191,9 @@ a.button {
 #footnote{
   padding: 100px;
   font-size: 1em;
-  padding-top: 100px;
+  padding-top: 50px;
 }
-
+/* scroll with bounce */
 section {
   position: relative;
   width: 100%;
@@ -224,9 +226,6 @@ section::after {
   opacity: .5;
 }
 
-/* #section04 a {
-  padding-top: 60px;
-} */
 #scroll a span {
   position: absolute;
   top: 0;

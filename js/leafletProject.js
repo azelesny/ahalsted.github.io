@@ -1,9 +1,9 @@
-/* Map of GeoJSON data from World Bank Open Data */
+/* Map of GeoJSON data from World Bank Open Data on Internet access in Aub-saharan Africa*/
 
 //calculate the radius of each proportional symbol
 function calcPropRadius(attValue) {
   if (attValue <1){
-    radius = 7;
+    radius = 7; //keep very small values from being too tiny
   } else{
     scaleFactor = 95;
     var area = attValue * scaleFactor;
@@ -18,19 +18,19 @@ function createPopup(properties, attribute, layer, radius){
   //build popup information
   var popupContent = "<p><b>Nation:</b> " + properties.name + "</p>";
   var year = attribute.split("_")[1];
-
+  //assign popup information with NA choice
   if (properties[attribute] == "na"){
     popupContent += "<p><b>Internet Access in " + year + ":</b> " + "Not available</p>";
   } else {
     var numberDecimals = properties[attribute];
-    var roundNumber = numberDecimals.toFixed(2);
+    var roundNumber = numberDecimals.toFixed(2);//round out decimal to 2 places
     popupContent += "<p><b>Internet Access in " + year + ":</b> " + roundNumber + "%</p>";
   }
   //bind popupContent to layer and offset a little
   layer.bindPopup(popupContent, {
         offset: new L.Point(0,-radius),
         });
-}
+};
 
 //create layer with circle radius prop symbols and popup information
 function pointToLayer(feature, latlng, attributes){
@@ -45,7 +45,7 @@ function pointToLayer(feature, latlng, attributes){
       fillOpacity: 0.8
   };
   if (attribute == 'na' ){
-    return options.radius = 7;
+    return options.radius = 7;//make NA markers same size as tiny markers
   } else {
   //determine value for each feature
   var attValue = Number(feature.properties[attribute]);
@@ -84,6 +84,7 @@ function updatePropSymbols(map, attribute){
       var props = layer.feature.properties;
       if (props[attribute] == 'na'){
         var radius = 7;
+        //make NA markers gray
         var naMarker= {
           fillColor: "#808080"
           }
@@ -301,27 +302,26 @@ function createMap(){
           center: [-3.5, 20],
           zoom: 4,
           minZoom: 4,
-          maxZoom: 7,
+          maxZoom: 9,
           maxBounds: [[35.023974, 61.357810],[-40.916196, -30.378981]],
           layers: [high]
       });
 
     //call getData function
     getData(map);
-
+    //assign names to baselayers
     var baseLayers={
       "High Contrast" : high,
       "Open Street Map" : osm,
-      "Humanitarian" : hot,
+      "Humanitarian OSM" : hot,
     };
     //add control for layers
-    L.control.layers(baseLayers).addTo(map);
+    L.control.layers(baseLayers,null,{collapsed:false}).addTo(map);
     //add additional attributions
     attribution = "Source: International Telecommunication Union, World Telecommunication/ICT Development Report and database. | icons by Dániel Aczél from the Noun Project"
     $('.leaflet-control-attribution').append(attribution);
 
 };
-
 
 //call the createMap function when HTML doc is ready
 $(document).ready(createMap);
