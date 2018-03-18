@@ -118,7 +118,8 @@ function setEnumerationUnits(asianCountries, map, path, colorScale){
         })
         .on("mouseout", function(d){
             dehighlight(d.properties);
-        });
+        })
+        .on("mousemove", moveLabel);
     var desc = asian.append("desc")
             .text('{"stroke": "#000", "stroke-width": "0.5px"}');
 };//end setEnumerationUnits
@@ -185,7 +186,8 @@ function setChart(csvData, colorScale){
         })
         .attr("width", chartWidth / csvData.length-1)
         .on("mouseover", highlight)
-        .on("mouseout", dehighlight);
+        .on("mouseout", dehighlight)
+        .on("mousemove", moveLabel);
   var desc = bars.append("desc")
           .text('{"stroke": "none", "stroke-width": "0px"}');
     // //annotate bars with attribute value text
@@ -331,6 +333,8 @@ function highlight(props){
     var selected = d3.selectAll("." + props.ADM0_A3)
         .style("stroke", "blue")
         .style("stroke-width", "2");
+    //call labels
+    setLabel(props);
 };
 
 //function to reset the element style on mouseout
@@ -342,7 +346,8 @@ function dehighlight(props){
         .style("stroke-width", function(){
             return getStyle(this, "stroke-width")
         });
-
+    d3.select(".infolabel")
+        .remove();
     function getStyle(element, styleName){
         var styleText = d3.select(element)
             .select("desc")
@@ -353,5 +358,48 @@ function dehighlight(props){
         return styleObject[styleName];
     };
 };
+
+//function to create dynamic label
+function setLabel(props){
+    //label content
+    var labelAttribute = "<h1>" + props[expressed] +
+        "</h1><b>" + expressed + "</b>";
+
+    //create info label div
+    var infolabel = d3.select("body")
+        .append("div")
+        .attr("class", "infolabel")
+        .attr("id", props.ADM0_A3 + "_label")
+        .html(labelAttribute);
+
+    var countryName = infolabel.append("div")
+        .attr("class", "labelname")
+        .html(props.ADM0_A3);
+        //how do I acccess the full name of the country?
+};//end function setLabel
+
+//function to move info label with mouse
+function moveLabel(){
+  //get width of label
+    var labelWidth = d3.select(".infolabel")
+        .node()
+        .getBoundingClientRect()
+        .width;
+
+    //use coordinates of mousemove event to set label coordinates
+    var x1 = d3.event.clientX + 10,
+        y1 = d3.event.clientY - 75,
+        x2 = d3.event.clientX - labelWidth - 10,
+        y2 = d3.event.clientY + 25;
+
+    //horizontal label coordinate, testing for overflow
+    var x = d3.event.clientX > window.innerWidth - labelWidth - 20 ? x2 : x1;
+    //vertical label coordinate, testing for overflow
+    var y = d3.event.clientY < 75 ? y2 : y1;
+
+    d3.select(".infolabel")
+        .style("left", x + "px")
+        .style("top", y + "px");
+};//end function moveLabel
 
 })();//last line of d3map.js
