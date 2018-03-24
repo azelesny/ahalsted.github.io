@@ -2,21 +2,23 @@
 (function(){
 
 //pseudo-global variables
-var asianArray = ["Human_Dev_Rank", "Human_Dev_Index", "GNI_per_capita", "POV_DAY", "POV_DAY_YEAR", "POV_NATIONAL", "POV_NATIONAL_YEAR", "OUT_OF_SCHOOL", "OUT_FEMALE_PRIMARY", "MALNUTRITION_UNDERWEIGHT", "MALNUTRITION_YEAR", "MALNUTRITION_WORLDBANK_2015"];
+var asianArray = ["Poverty % ($1.90 a day)", "National Poverty %","% Primary Children Out of School", "% Female Primary Children Out of School", "Prevalance of Undernourishment","Human Development Rank", "Human Development Index", "GNI per capita"];
 var expressed = asianArray[0]; //initial attributes
+
 //chart frame dimensions
 var chartWidth = window.innerWidth*0.425,
-    chartHeight = 473;
+    chartHeight = window.innerHeight*0.90;
     leftPadding = 25,
     rightPadding = 2,
-    topBottomPadding = 5,
+    topPadding = 30,
+    bottomPadding = 5,
     chartInnerWidth = chartWidth - leftPadding - rightPadding,
-    chartInnerHeight = chartHeight - topBottomPadding * 2,
-    translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
+    chartInnerHeight = chartHeight - topPadding - bottomPadding,
+    translate = "translate(" + leftPadding + "," + topPadding + ")";
 //create a scale to size bars proportionally to frame
 var yScale = d3.scaleLinear()
-      .range([463, 0])
-      .domain([0, 200]);
+      .range([chartHeight, 0])
+      .domain([0, 75]);
 //execute script when window is loaded
 window.onload = setMap();
 
@@ -24,7 +26,7 @@ window.onload = setMap();
 function setMap(){
   //map frame dimensions
       var width = window.innerWidth *0.5,
-          height = 460;
+          height = window.innerHeight*0.98;
   //create new svg container for the map
       var map = d3.select("body")
           .append("svg")
@@ -32,7 +34,7 @@ function setMap(){
           .attr("width", width)
           .attr("height", height);
   //mercator projection and zoom/panning
-      var projection = d3.geoMercator()
+      var projection = d3.geoPatterson()
         .center([100, 25])
         .scale(360)
         .translate([width / 2, height / 2]);
@@ -88,7 +90,6 @@ function joinData(asianCountries, csvData){
       for (var i=0; i<csvData.length; i++){
           var csvRegion = csvData[i]; //the current region
           var csvKey = csvRegion.ADM0_A3; //the CSV primary key
-
           //loop through geojson regions to find correct region
           for (var a=0; a<asianCountries.length; a++){
 
@@ -107,6 +108,7 @@ function joinData(asianCountries, csvData){
           };
       };
       return asianCountries;
+
 };//end of joinData
 
 function setEnumerationUnits(asianCountries, map, path, colorScale){
@@ -162,6 +164,7 @@ function makeColorScale(data){
 function choropleth(props, colorScale){
     //make sure attribute value is a number
     var val = parseFloat(props[expressed]);
+
     //if attribute value exists, assign a color; otherwise assign gray
     if (typeof val == 'number' && !isNaN(val)){
         return colorScale(val);
@@ -181,8 +184,8 @@ function setChart(csvData, colorScale){
     //create a rectangle for chart background fill
     var chartBackground = chart.append("rect")
         .attr("class", "chartBackground")
-        .attr("width", chartInnerWidth)
-        .attr("height", chartInnerHeight)
+        .attr("width", chartWidth)
+        .attr("height", chartHeight)
         .attr("transform", translate);
     //set bars for each province
     var bars = chart.selectAll(".bars")
@@ -190,7 +193,7 @@ function setChart(csvData, colorScale){
         .enter()
         .append("rect")
         .sort(function(a,b){
-          return b[expressed]-a[expressed];
+          return b[expressed]-a[expressed] || b[expressed]-0;
         })
         .attr("class", function(d){
             return "bars " + d.ADM0_A3;
@@ -239,17 +242,18 @@ function setChart(csvData, colorScale){
           .attr("transform", translate)
           .call(yAxis);
       //create frame for chart border
-      var chartFrame = chart.append("rect")
-          .attr("class", "chartFrame")
-          .attr("width", chartInnerWidth)
-          .attr("height", chartInnerHeight)
-          .attr("transform", translate);
+      // var chartFrame = chart.append("rect")
+      //     .attr("class", "chartFrame")
+      //     .attr("width", chartInnerWidth)
+      //     .attr("height", chartInnerHeight)
+      //     .attr("transform", translate);
       //create chart title
       var chartTitle = chart.append("text")
-              .attr("x", 40)
-              .attr("y", 40)
+              .attr("x", chartWidth*.5)
+              .attr("y", chartHeight*.1)
+              .attr("text-anchor", "middle")
               .attr("class", "chartTitle")
-              .text("Variable " + expressed[0] + " in each nation");
+              .text(expressed);
     updateChart(bars, csvData.length,colorScale);
 };//end of setChart
 
@@ -281,6 +285,27 @@ function createDropdown(csvData){
 function changeAttribute(attribute, csvData){
     //change the expressed attribute
     expressed = attribute;
+    // put attributes into arry
+    var changeArray =[];
+    for (var i=0; i<csvData.length; i++){
+        var val = parseFloat(csvData[i][expressed]);
+        changeArray.push(val);
+        console.log(csvData[i][expressed]);
+    };
+    //check for max and min values
+    var maxValue = d3.max(changeArray);
+    var minValue = d3.min(changeArray);
+
+    //update the chart Y axis
+    yScale = d3.scaleLinear()
+      .range([chartHeight, 0])
+      .domain([0, maxValue+(maxValue*.1)]);
+    //recreate vertical axis generator
+      var yAxis = d3.axisLeft()
+          .scale(yScale)
+          .tickSize(minValue,maxValue);
+      d3.selectAll("g.axis")
+          .call(yAxis);
     //recreate the color scale
     var colorScale = makeColorScale(csvData);
     //recolor enumeration units
@@ -293,8 +318,8 @@ function changeAttribute(attribute, csvData){
     //re-sort, resize, and recolor bars
     var bars = d3.selectAll(".bars")
         //re-sort bars
-        .sort(function(a, b){
-            return b[expressed] - a[expressed];
+        .sort(function(a,b){
+          return b[expressed]-a[expressed] || b[expressed]-0;
         })
         .transition() //add animation
         .delay(function(d,i){
@@ -314,9 +339,9 @@ function updateChart(bars, n, colorScale){
         .attr("height", function(d, i){
           //make sure attribute value is a number
           var val = parseFloat(d[expressed]);
-          //if attribute value exists, assign a color; otherwise assign gray
+          //is attribute value a number
           if (typeof val == 'number' && !isNaN(val)){
-              return 463 - yScale(parseFloat(d[expressed]));
+              return chartHeight - yScale(parseFloat(d[expressed]));
           } else {
               return 0;
           };
@@ -324,9 +349,9 @@ function updateChart(bars, n, colorScale){
         .attr("y", function(d, i){
           //make sure attribute value is a number
           var val = parseFloat(d[expressed]);
-          //if attribute value exists, assign a color; otherwise assign gray
+          //is attribute value a number
           if (typeof val == 'number' && !isNaN(val)){
-              return yScale(parseFloat(d[expressed])) + topBottomPadding;
+              return yScale(parseFloat(d[expressed])) + bottomPadding;
           } else {
               return 0;
           };
@@ -336,8 +361,9 @@ function updateChart(bars, n, colorScale){
             return choropleth(d, colorScale);
         });
     var chartTitle = d3.select(".chartTitle")
-        .text("Variable " + expressed[0] + " in each nation");
-};
+        .text(expressed);
+  };//end updateChart
+
 //function to highlight enumeration units and bars
 function highlight(props){
     //change stroke
