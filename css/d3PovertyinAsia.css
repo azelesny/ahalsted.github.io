@@ -107,16 +107,20 @@ html, body{
   background-color: #efeded;
 }
 body h1{
-  margin: 4px;
+  margin: 4px 4px 0px;
   text-align: center;
   font-size: 2em;
   font-family: 'Lato', sans-serif;
+  color: #fff;
+  background-color: #062022;
 }
 body h2{
-  margin: 4px;
+  margin: 0px 4px 4px;
   text-align: center;
   font-size: 1.5em;
   font-family: 'Lato', sans-serif;
+  background-color: #062022;
+  color: #fff;
 }
 .world{
   fill: #c9c9c9;
@@ -128,7 +132,10 @@ body h2{
     margin: 10px 0 0 20px;
     background-color:#f9f7f7;
     box-shadow: #e5e3e3;
+    cursor: pointer;
+
 }
+
 .countries{
     stroke: #000;
     stroke-width: 0.5px;
@@ -138,6 +145,7 @@ body h2{
     float: right;
     margin: 7px 20px 0 0;
 }
+
 .chartTitle {
     font-family: sans-serif;
     font-size: 1.5em;
@@ -151,14 +159,29 @@ body h2{
 .axis path,
 .axis line {
     fill: none;
-    stroke: #2A2C39;
+    stroke: #062022;
     stroke-width: 1px;
     shape-rendering: crispEdges;
 }
 .axis text {
     font-family: 'Lato', sans-serif;
     font-size: 1em;
-    fill: #2A2C39;
+    fill: #062022;
+}
+.hoverInfo{
+  position: absolute;
+  top: 110px;
+  z-index: 10;
+  left: 35em;
+  height: auto;
+  width: 80px;
+  font-family: 'Lato', sans-serif;
+  font-size: .8em;
+  color:#2A2C39;
+  text-align: center;
+  border: medium solid #e5e3e3;
+  background-color:#efeded;
+  opacity: 0.7;
 }
 .dropdown {
     position: absolute;
@@ -181,7 +204,7 @@ option {
     height: 50px;
     min-width: 100px;
     color: #fff;
-    background-color: #2A2C39;
+    background-color: #062022;
     border: solid thin #fff;
     padding: 5px 10px;
     border-radius: 10px;
@@ -200,6 +223,11 @@ option {
 labelname{
   color: #fff;
   font-family: 'Lato', sans-serif;
+}
+
+#information{
+  position:relative;
+  padding-top: 500px;
 }
 /* ==========================================================================
    Helper classes
@@ -290,10 +318,44 @@ labelname{
    These examples override the primary ('mobile first') styles.
    Modify as content requires.
    ========================================================================== */
-
-@media only screen and (min-width: 35em) {
-    /* Style adjustments for viewports that meet the condition */
-}
+ @media only screen and (max-width: 800px) {
+     .map {
+        clear: both;
+        margin: 2px 0 0 2px;
+        width: 100%;
+     }
+     .chart,
+     .chartBackground {
+         float: none;
+         margin: 2px 0 0 2px;
+         width: 100%;
+     }
+     body h1,
+     body h2,
+     .chartTitle,{
+       overflow: auto;
+     }
+     body h1,
+     body h2{
+       height: 2em;
+       font-size: 1em;
+     }
+     .bars{
+       width: 2em;
+     }
+     .dropdown{
+       position: absolute;
+       top: 5em;
+       font-family: 'Lato', sans-serif;
+       font-size: .8em;
+       font-weight: bold;
+       padding: 2px;
+       border: 1px solid #999;
+     }
+     .hoverInfo{
+       display: none;
+     }
+   }
 
 @media print,
        (-webkit-min-device-pixel-ratio: 1.25),

@@ -2,7 +2,7 @@
 (function(){
 
 //pseudo-global variables
-var asianArray = ["Poverty % ($1.90 a day)", "National Poverty %","% Primary Children Out of School", "% Female Primary Children Out of School", "Prevalance of Undernourishment","Human Development Rank", "Human Development Index", "GNI per capita"];
+var asianArray = ["% Poverty ($1.90 a day)", "% National Poverty","% Primary Children Out of School", "% Female Primary Children Out of School", "% Prevalance of Undernourishment","Human Development Rank", "Human Development Index", "GNI per capita"];
 var expressed = asianArray[0]; //initial attributes
 
 //chart frame dimensions
@@ -33,10 +33,15 @@ function setMap(){
           .attr("class", "map")
           .attr("width", width)
           .attr("height", height);
+      var hoverInfo = d3.select("body")
+          .append("div")
+          .attr("class", "hoverInfo")
+          .attr("fill", "#2A2C39")
+          .text("Hover over country for detailed information");
   //mercator projection and zoom/panning
       var projection = d3.geoPatterson()
         .center([100, 25])
-        .scale(360)
+        .scale(300)
         .translate([width / 2, height / 2]);
       var zoom = d3.zoom()
           .on("zoom", zoomed)
@@ -228,7 +233,8 @@ function setChart(csvData, colorScale){
               .attr("y", chartHeight*.1)
               .attr("text-anchor", "middle")
               .attr("class", "chartTitle")
-              .text(expressed);
+              .text(expressed)
+              .append("a").attr("xlink:href",function(d){return "#information"});
     updateChart(bars, csvData.length,colorScale);
 };//end of setChart
 
@@ -285,7 +291,7 @@ function changeAttribute(attribute, csvData){
     //recolor enumeration units
     var asian = d3.selectAll(".countries")
         .transition()
-        .duration(1000)
+        .duration(1500)
         .style("fill", function(d){
             return choropleth(d.properties, colorScale)
         });
@@ -297,9 +303,9 @@ function changeAttribute(attribute, csvData){
         })
         .transition() //add animation
         .delay(function(d,i){
-          return i*20
+          return i*10
         })
-        .duration(500);
+        .duration(1500);
       updateChart(bars, csvData.length,colorScale);
 };//end of changeAttribute
 
