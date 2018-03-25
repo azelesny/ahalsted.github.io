@@ -1,32 +1,32 @@
-ADM0_A3,Short Name,Long Name,Classification,Region,Poverty % ($1.90 a day),National Poverty %,% Primary Children Out of School,% Female Primary Children Out of School,Prevalance of undernourishment,Human Development Rank,Human Development Index,GNI per capita
-AFG,Afghanistan,Islamic State of Afghanistan,"LDC, LLDC",Southern Asia,,35.8,36,47,25.00,171,0.46526426,1885.00
-BGD,Bangladesh,People's Republic of Bangladesh,LDC,Southern Asia,18.52,31.51,9,7,32.60,142,0.570099974,3191.50
-BRN,Brunei,Brunei Darussalam,,South-eastern Asia,,,,,9.60,31,0.855615865,72570.13
-BTN,Bhutan,Kingdom of Bhutan,LDC,Southern Asia,2.17,12,5,5,12.80,132,0.605184588,7175.50
-CHN,China,People's Republic of China,,Eastern Asia,1.85,4.6,3,3,2.40,90,0.727494941,12547.03
-HKG,"Hong Kong SAR, China",Hong Kong Special Administrative Region of the People's Republic of China,,Eastern Asia,,,,,,12,0.90995187,53959.41
-IDN,Indonesia,Republic of Indonesia,,South-eastern Asia,8.25,11.3,1,1,19.90,110,0.683759559,9788.43
-IND,India,Republic of India,,Southern Asia,21.23,21.9,17,18,35.70,130,0.608692727,5497.50
-JPN,Japan,Japan,,Eastern Asia,0.3,,0.049,0.049,3.40,20,0.890593213,36926.92
-KAZ,Kazakhstan,Republic of Kazakhstan,LLDC,Central Asia,0.04,2.9,1,1,2.00,56,0.787982452,20867.35
-KGZ,Kyrgyz Republic,Kyrgyz Republic,LLDC,Central Asia,2.17,37,1,1,2.80,120,0.655273515,3044.23
-KHM,Cambodia,Kingdom of Cambodia,LDC,South-eastern Asia,,17.7,7,6,23.90,143,0.554758321,2948.93
-KOR,Korea,Republic of Korea,,Eastern Asia,0.3,,1.23,1.4,0.70,17,0.898334135,33890.45
-LAO,Lao PDR,Lao People's Democratic Republic,"LDC, LLDC",South-eastern Asia,16.72,23.2,7.2,7.85,26.50,141,0.575044891,4680.09
-LKA,Sri Lanka,Democratic Socialist Republic of Sri Lanka,,Southern Asia,1.92,6.7,2,2,20.50,73,0.756658911,9778.61
-MAC,"Macao SAR, China",Macao Special Administrative Region of the People's Republic of China,,Eastern Asia,,,4.7,4.49,,,,
-MDV,Maldives,Republic of Maldives,SIDS,Southern Asia,7.26,15.7,6,5,17.80,104,0.706365292,12328.39
-MMR,Myanmar,Republic of the Union of Myanmar,LDC,South-eastern Asia,6.5,19.4,18,18,18.90,148,0.535560678,4607.67
-MNG,Mongolia,Mongolia,LLDC,Eastern Asia,0.22,27.4,2,2,1.60,90,0.726620589,10729.38
-MYS,Malaysia,Malaysia,,South-eastern Asia,0.28,1.7,1.9,1.63,12.40,62,0.779245824,22762.14
-NPL,Nepal,Nepal,"LDC, LLDC",Southern Asia,14.99,25.2,23,23,27.00,145,0.547536525,2311.26
-PAK,Pakistan,Islamic Republic of Pakistan,,Southern Asia,6.07,22.3,36,40,31.60,147,0.538381762,4866.18
-PHL,Philippines,Republic of the Philippines,,South-eastern Asia,13.11,25.2,12,11,21.50,115,0.668218346,7915.20
-PRK,Dem. People's Rep. Korea,Democratic People's Republic of Korea,,Eastern Asia,,,1,1,15.20,,,
-SGP,Singapore,Republic of Singapore,SIDS,South-eastern Asia,,,,,3.30,11,0.91179782,76628.20
-THA,Thailand,Kingdom of Thailand,,South-eastern Asia,0.04,12.6,4,4,6.70,93,0.725836139,13322.90
-TJK,Tajikistan,Republic of Tajikistan,LLDC,Central Asia,19.51,47.2,3,3,13.30,129,0.624455505,2517.40
-TKM,Turkmenistan,Turkmenistan,,Central Asia,42.26,,2,2,3.20,109,0.687520517,13066.17
-TLS,Timor-Leste,Democratic Republic of Timor-Leste,"LDC, SIDS",South-eastern Asia,46.76,49.9,28,27,37.70,133,0.594761079,5362.52
-UZB,Uzbekistan,Republic of Uzbekistan,LLDC,Central Asia,66.79,16,5,5,4.40,114,0.675466117,5567.01
-VNM,Vietnam,Socialist Republic of Vietnam,,South-eastern Asia,3.06,17.2,2,2,14.10,116,0.66571735,5091.79
+ADM0_A3,Long_Name,Region,Poverty % ($1.90 a day),National Poverty %,% Primary Children Out of School,% Female Primary Children Out of School,Prevalance of Undernourishment,Human Development Rank,Human Development Index,GNI per capita
+AFG,Islamic State of Afghanistan,Southern Asia,,35.8,36,47,25,171,0.46526426,1885
+BGD,People's Republic of Bangladesh,Southern Asia,18.52,31.51,9,7,32.6,142,0.570099974,3191.5
+BRN,Brunei Darussalam,South-eastern Asia,,,,,9.6,31,0.855615865,72570.13
+BTN,Kingdom of Bhutan,Southern Asia,2.17,12,5,5,12.8,132,0.605184588,7175.5
+CHN,People's Republic of China,Eastern Asia,1.85,4.6,3,3,2.4,90,0.727494941,12547.03
+HKG,Hong Kong Special Administrative Region of the People's Republic of China,Eastern Asia,,,,,,12,0.90995187,53959.41
+IDN,Republic of Indonesia,South-eastern Asia,8.25,11.3,1,1,19.9,110,0.683759559,9788.43
+IND,Republic of India,Southern Asia,21.23,21.9,17,18,35.7,130,0.608692727,5497.5
+JPN,Japan,Eastern Asia,0.3,,0.049,0.049,3.4,20,0.890593213,36926.92
+KAZ,Republic of Kazakhstan,Central Asia,0.04,2.9,1,1,2,56,0.787982452,20867.35
+KGZ,Kyrgyz Republic,Central Asia,2.17,37,1,1,2.8,120,0.655273515,3044.23
+KHM,Kingdom of Cambodia,South-eastern Asia,,17.7,7,6,23.9,143,0.554758321,2948.93
+KOR,Republic of Korea,Eastern Asia,0.3,,1.23,1.4,0.7,17,0.898334135,33890.45
+LAO,Lao People's Democratic Republic,South-eastern Asia,16.72,23.2,7.2,7.85,26.5,141,0.575044891,4680.09
+LKA,Democratic Socialist Republic of Sri Lanka,Southern Asia,1.92,6.7,2,2,20.5,73,0.756658911,9778.61
+MAC,Macao Special Administrative Region of the People's Republic of China,Eastern Asia,,,4.7,4.49,,,,
+MDV,Republic of Maldives,Southern Asia,7.26,15.7,6,5,17.8,104,0.706365292,12328.39
+MMR,Republic of the Union of Myanmar,South-eastern Asia,6.5,19.4,18,18,18.9,148,0.535560678,4607.67
+MNG,Mongolia,Eastern Asia,0.22,27.4,2,2,1.6,90,0.726620589,10729.38
+MYS,Malaysia,South-eastern Asia,0.28,1.7,1.9,1.63,12.4,62,0.779245824,22762.14
+NPL,Nepal,Southern Asia,14.99,25.2,23,23,27,145,0.547536525,2311.26
+PAK,Islamic Republic of Pakistan,Southern Asia,6.07,22.3,36,40,31.6,147,0.538381762,4866.18
+PHL,Republic of the Philippines,South-eastern Asia,13.11,25.2,12,11,21.5,115,0.668218346,7915.2
+PRK,Democratic People's Republic of Korea,Eastern Asia,,,1,1,15.2,,,
+SGP,Republic of Singapore,South-eastern Asia,,,,,3.3,11,0.91179782,76628.2
+THA,Kingdom of Thailand,South-eastern Asia,0.04,12.6,4,4,6.7,93,0.725836139,13322.9
+TJK,Republic of Tajikistan,Central Asia,19.51,47.2,3,3,13.3,129,0.624455505,2517.4
+TKM,Turkmenistan,Central Asia,42.26,,2,2,3.2,109,0.687520517,13066.17
+TLS,Democratic Republic of Timor-Leste,South-eastern Asia,46.76,49.9,28,27,37.7,133,0.594761079,5362.52
+UZB,Republic of Uzbekistan,Central Asia,66.79,16,5,5,4.4,114,0.675466117,5567.01
+VNM,Socialist Republic of Vietnam,South-eastern Asia,3.06,17.2,2,2,14.1,116,0.66571735,5091.79

@@ -104,16 +104,30 @@ html, body{
   height:100%;
   width: 100vw;
   display: inline-block;
+  background-color: #efeded;
+}
+body h1{
+  margin: 4px;
+  text-align: center;
+  font-size: 2em;
+  font-family: 'Lato', sans-serif;
+}
+body h2{
+  margin: 4px;
+  text-align: center;
+  font-size: 1.5em;
+  font-family: 'Lato', sans-serif;
 }
 .world{
-  fill: #d0d0d0;
-  stroke: #4c4a4a;
-  stroke-width: 2px;
+  fill: #c9c9c9;
+  stroke: #b7b5b5;
+  stroke-width: 1px;
 }
 .map {
-    border: medium solid #999;
+    border: medium solid #e5e3e3;
     margin: 10px 0 0 20px;
-    background-color:#2A2C39;
+    background-color:#f9f7f7;
+    box-shadow: #e5e3e3;
 }
 .countries{
     stroke: #000;
@@ -124,43 +138,34 @@ html, body{
     float: right;
     margin: 7px 20px 0 0;
 }
-
 .chartTitle {
     font-family: sans-serif;
     font-size: 1.5em;
     font-weight: bold;
+    font-family: 'Lato', sans-serif;
 }
 
 .chartBackground {
-    fill: rgba(128,128,128,.2);
+    fill: #efeded;
 }
-
-.chartFrame {
-    fill: none;
-    stroke: #999;
-    stroke-width: 3px;
-    shape-rendering: crispEdges;
-}
-
 .axis path,
 .axis line {
     fill: none;
-    stroke: #999;
+    stroke: #2A2C39;
     stroke-width: 1px;
     shape-rendering: crispEdges;
 }
-
 .axis text {
-    font-family: sans-serif;
-    font-size: 0.8em;
-    fill: #999;
+    font-family: 'Lato', sans-serif;
+    font-size: 1em;
+    fill: #2A2C39;
 }
 .dropdown {
     position: absolute;
-    top: 30px;
+    top: 110px;
     left: 40px;
     z-index: 10;
-    font-family: sans-serif;
+    font-family: 'Lato', sans-serif;
     font-size: 1em;
     font-weight: bold;
     padding: 2px;
@@ -176,9 +181,12 @@ option {
     height: 50px;
     min-width: 100px;
     color: #fff;
-    background-color: #000;
+    background-color: #2A2C39;
     border: solid thin #fff;
     padding: 5px 10px;
+    border-radius: 10px;
+    top: -75px;
+    font-family: 'Lato', sans-serif;
 }
 
 .infolabel h1 {
@@ -186,16 +194,12 @@ option {
     padding: 0;
     display: inline-block;
     line-height: 1em;
+    font-family: 'Lato', sans-serif;
 }
-infolabel {
-    position: absolute;
-    height: 50px;
-    min-width: 100px;
-    color: #fff;
-    background-color: #000;
-    border: solid thin #fff;
-    padding: 5px 10px;
-    top: -75px;
+
+labelname{
+  color: #fff;
+  font-family: 'Lato', sans-serif;
 }
 /* ==========================================================================
    Helper classes
