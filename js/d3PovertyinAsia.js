@@ -2,19 +2,30 @@
 (function(){
 
 //pseudo-global variables
-var asianArray = ["% Poverty ($1.90 a day)", "% National Poverty","% Primary Children Out of School", "% Female Primary Children Out of School", "% Prevalance of Undernourishment","Human Development Rank", "Human Development Index", "GNI per capita"];
+var asianArray = ["% Poverty ($1.90 a day)", "% National Poverty","% Primary Children Out of School", "% Female Primary Children Out of School", "% Prevalance of Undernourishment","Human Development Rank", "Human Development Index", "GNI per capita", "Long_Name"];
 var expressed = asianArray[0]; //initial attributes
 
 //chart frame dimensions
 var chartWidth = window.innerWidth*0.425,
     chartHeight = window.innerHeight*0.70;
-    leftPadding = 35,
-    rightPadding = 10,
-    topPadding = 30,
-    bottomPadding = 5,
+    leftPadding = chartWidth*.07,
+    rightPadding = chartWidth*.02,
+    topPadding = chartHeight*.08,
+    bottomPadding = chartHeight*.015,
     chartInnerWidth = chartWidth - leftPadding - rightPadding,
     chartInnerHeight = chartHeight - topPadding - bottomPadding,
     translate = "translate(" + leftPadding + "," + topPadding + ")";
+
+    // var chartWidth = window.innerWidth*0.425,
+    //     chartHeight = window.innerHeight*0.70;
+    //     leftPadding = 35,
+    //     rightPadding = 10,
+    //     topPadding = 30,
+    //     bottomPadding = 5,
+    //     chartInnerWidth = chartWidth - leftPadding - rightPadding,
+    //     chartInnerHeight = chartHeight - topPadding - bottomPadding,
+    //     translate = "translate(" + leftPadding + "," + topPadding + ")";
+
 //create a scale to size bars proportionally to frame
 var yScale = d3.scaleLinear()
       .range([chartHeight, 0])
@@ -45,8 +56,7 @@ function setMap(){
         .translate([width / 2, height / 2]);
       var zoom = d3.zoom()
           .on("zoom", zoomed)
-          .scaleExtent([0,4]);
-          //need to add limits for zoom out and panning
+          .scaleExtent([1,8]);
       var path = d3.geoPath()
             .projection(projection);
   //zoom function to be called on zoom
@@ -104,8 +114,12 @@ function joinData(asianCountries, csvData){
               if (geojsonKey == csvKey){
                   //assign all attributes and values
                   asianArray.forEach(function(attr){
+                      if($.isNumeric(csvRegion[attr])){ //parse out Long_Name
                       var val = parseFloat(csvRegion[attr]); //get csv attribute value
                       geojsonProps[attr] = val; //assign attribute and value to geojson properties
+                    } else {
+                      geojsonProps[attr] = csvRegion[attr];//assign Long_Name
+                    };
                   });
           };
       };
@@ -139,16 +153,6 @@ function setEnumerationUnits(asianCountries, map, path, colorScale){
 
 //function to create color scale generator
 function makeColorScale(data){
-    // var colorClasses = [
-    //   "#ffffe5",
-    //   "#f7fcb9",
-    //   "#d9f0a3",
-    //   "#addd8e",
-    //   "#78c679",
-    //   "#41ab5d",
-    //   "#238443",
-    //   "#005a32"
-    // ];
     var colorClasses = [
       "#A1FF9A",
       "#7ADD92",
@@ -240,6 +244,16 @@ function setChart(csvData, colorScale){
 
 //function to create a dropdown menu for attribute selection
 function createDropdown(csvData){
+    //create new empty array to parse into
+    dropdownArray = [];
+    //parse out Long_Name
+    for (var i=0; i<asianArray.length; i++){
+        var val = asianArray[i];
+        if (val !== "Long_Name"){
+            dropdownArray.push(val);
+      }
+    };
+
     //add select element
     var dropdown = d3.select("body")
         .append("select")
@@ -255,11 +269,12 @@ function createDropdown(csvData){
 
     //add attribute name options
     var attrOptions = dropdown.selectAll("attrOptions")
-        .data(asianArray)
+        .data(dropdownArray)
         .enter()
         .append("option")
         .attr("value", function(d){ return d })
         .text(function(d){ return d });
+
 };//end of createDropdown
 
 //dropdown change listener handler
@@ -311,9 +326,42 @@ function changeAttribute(attribute, csvData){
 
 //function to position, size, and color bars in chart
 function updateChart(bars, n, colorScale){
-    //position bars
-    bars.attr("x", function(d, i){
+    //window size listener
+    var size = window.matchMedia("(max-width: 800px)");
+    if (size = false){
+      //position bars
+      bars.attr("x", function(d, i){
             return i * (chartInnerWidth / n) + leftPadding;
+          })
+          //resize bars
+          .attr("height", function(d, i){
+            //make sure attribute value is a number
+            var val = parseFloat(d[expressed]);
+            //is attribute value a number
+            if (typeof val == 'number' && !isNaN(val)){
+                return chartHeight - yScale(parseFloat(d[expressed]));
+            } else {
+                return 0;
+            };
+          })
+          .attr("y", function(d, i){
+            //make sure attribute value is a number
+            var val = parseFloat(d[expressed]);
+            //is attribute value a number
+            if (typeof val == 'number' && !isNaN(val)){
+                return yScale(parseFloat(d[expressed])) + bottomPadding;
+            } else {
+                return 0;
+            };
+          })
+          //color/recolor bars
+          .style("fill", function(d){
+              return choropleth(d, colorScale);
+          });
+    } else {
+    //position bars for mobile screens
+    bars.attr("x", function(d, i){
+          return (i * (chartWidth / n)) +leftPadding;
         })
         //resize bars
         .attr("height", function(d, i){
@@ -340,6 +388,8 @@ function updateChart(bars, n, colorScale){
         .style("fill", function(d){
             return choropleth(d, colorScale);
         });
+      }//end else
+
     var chartTitle = d3.select(".chartTitle")
         .text(expressed);
   };//end updateChart
@@ -384,33 +434,9 @@ function setLabel(props, csvData){
         .attr("id", [props.ADM0_A3] + "_label")
         .html(labelAttribute)
 
-        // function getCountryNames(ADM0_A3){
-        //   d3.csv("data/Poverty_asia.csv", function(nameArray){
-        //       for (var i=0; i < nameArray.length; i++){
-        //         if(ADM0_A3 === nameArray[i]["ADM0_A3"]){
-        //           console.log("I'm here!");
-        //           return nameArray[i]["Long_Name"];
-        //         }
-        //       }
-        //   })
-        // };
-
-        var countryName = infolabel.append("div")
-            .attr("class", "labelname")
-            // .html(function(d){
-            //   return getCountryNames(props.ADM0_A3);
-            // });
-            .html(function(ADM0_A3){
-              d3.csv("data/Poverty_asia.csv", function(nameArray){
-                  for (var i=0; i < nameArray.length; i++){
-                    if(props.ADM0_A3 === nameArray[i]["ADM0_A3"]){
-                      console.log(nameArray[i]["Long_Name"]);
-                      return nameArray[i]["Long_Name"];
-                    }
-                  }
-              })
-            });
-
+    var countryName = infolabel.append("div")
+        .attr("class", "labelname")
+        .html(props.Long_Name);
 };//end function setLabel
 
 //function to move info label with mouse
