@@ -112,14 +112,14 @@ body h1{
   font-size: 2em;
   font-family: 'Lato', sans-serif;
   color: #fff;
-  background-color: #062022;
+  background-color: #290009;
 }
 body h2{
   margin: 0px 4px 4px;
   text-align: center;
   font-size: 1.5em;
   font-family: 'Lato', sans-serif;
-  background-color: #062022;
+  background-color: #290009;
   color: #fff;
 }
 .world{
@@ -133,7 +133,6 @@ body h2{
     background-color:#f9f7f7;
     box-shadow: #e5e3e3;
     cursor: pointer;
-
 }
 
 .countries{
@@ -169,10 +168,10 @@ body h2{
     fill: #062022;
 }
 .hoverInfo{
-  position: absolute;
-  top: 110px;
+  position: fixed;
+  top: 25%;
   z-index: 10;
-  left: 35em;
+  left: 40%;
   height: auto;
   width: 80px;
   font-family: 'Lato', sans-serif;
@@ -182,6 +181,21 @@ body h2{
   border: medium solid #e5e3e3;
   background-color:#efeded;
   opacity: 0.7;
+}
+.factInfo{
+  position: absolute;
+  top: 75%;
+  z-index: 10;
+  left: 4%;
+  height: auto;
+  width: 45%;
+  font-family: 'Lato', sans-serif;
+  font-size: .8em;
+  color:#2A2C39;
+  text-align: center;
+  border: medium solid #e5e3e3;
+  background-color:#efeded;
+  opacity: 0.8;
 }
 .dropdown {
     position: absolute;
@@ -204,7 +218,7 @@ option {
     height: 50px;
     min-width: 100px;
     color: #fff;
-    background-color: #062022;
+    background-color: #290009;
     border: solid thin #fff;
     padding: 5px 10px;
     border-radius: 10px;
@@ -224,11 +238,80 @@ labelname{
   color: #fff;
   font-family: 'Lato', sans-serif;
 }
-
-#information{
-  position:relative;
-  padding-top: 500px;
+body h2 button{
+  background-color: #d8d8d4;
+  border-radius: 50px;
+  font-size: .5em;
+  font-family: 'Lato', sans-serif;
 }
+body h2 button:hover{
+  background-color:#ffffff;
+  color: #009ac9;
+  border-color: #009ac9;
+
+}
+.overlay{
+  position:fixed;
+  width:100%;
+  height:100%;
+  top: 0;
+  left: 0;
+  background-color:#290009;
+}
+.close {
+  width: 70px;
+  height: 50px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  border: 1px solid #000;
+  border-radius: 10px;
+  font-size: 1em;
+  font-family: 'Lato', sans-serif;
+}
+.close:hover{
+  background-color:#ffffff;
+  color: #009ac9;
+  border-color: #009ac9;
+}
+.overlay-data {
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+  visibility: 0s 0.5s;
+  transition: opacity 0.5s, visibility 0s 0.5s;
+}
+.overlay-data p{
+  margin: 50px 20px 20px 20px;
+  font-size: 1em;
+  font-family: 'Lato', sans-serif;
+  color: #fff;
+}
+.overlay-data ul{
+  font-size: 1em;
+  font-family: 'Lato', sans-serif;
+  color: #fff;
+}
+.overlay-data a:link{
+  font-size: 1em;
+  font-family: 'Lato', sans-serif;
+  color: #feb24c;
+}
+.overlay-data a:visited{
+  font-size: 1em;
+  font-family: 'Lato', sans-serif;
+  color: #feb24c;
+}
+
+.overlay-open {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transition: opacity 0.5s;
+  transition: opacity 0.5s;
+}
+
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
@@ -329,19 +412,24 @@ labelname{
          float: none;
          margin: 2px 0 0 2px;
          width: 100%;
-     }
-     body h1,
-     body h2,
-     .chartTitle,{
-       overflow: auto;
+         padding-left: 10px;
+         padding-bottom: 20px;
      }
      body h1,
      body h2{
+       overflow: auto;
+     }
+     body h1{
        height: 2em;
        font-size: 1em;
      }
-     .bars{
-       width: 2em;
+     body h2{
+       height: 2em;
+       font-size: .8em;
+     }
+     .chartTitle{
+       overflow: auto;
+       font-size: 1em;
      }
      .dropdown{
        position: absolute;
@@ -354,6 +442,9 @@ labelname{
      }
      .hoverInfo{
        display: none;
+     }
+     .factInfo{
+      width: 90%;
      }
    }
 

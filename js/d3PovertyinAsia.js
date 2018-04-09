@@ -1,5 +1,23 @@
 //wrapping everything in self executing anonymous function to move to local scope
 (function(){
+  //reload on window resize
+window.onresize = function(){location.reload()};
+
+//listen for overlay toggle
+$("#trigger-overlay").click(function() {
+        $(".overlay").addClass
+        ('overlay-open');
+        $('.hoverInfo').css("visibility","hidden");
+        $('.dropdown').css("visibility","hidden");
+        $('.factInfo').css("visibility","hidden");
+      });
+$( ".close" ).click(function() {
+      $( ".overlay" ).removeClass
+      ( 'overlay-open' );
+      $('.hoverInfo').css("visibility","visible");
+      $('.dropdown').css("visibility","visible");
+      $('.factInfo').css("visibility","visible");
+      });
 
 //pseudo-global variables
 var asianArray = ["% Poverty ($1.90 a day)", "% National Poverty","% Primary Children Out of School", "% Female Primary Children Out of School", "% Prevalance of Undernourishment","Human Development Rank", "Human Development Index", "GNI per capita", "Long_Name"];
@@ -8,23 +26,13 @@ var expressed = asianArray[0]; //initial attributes
 //chart frame dimensions
 var chartWidth = window.innerWidth*0.425,
     chartHeight = window.innerHeight*0.70;
-    leftPadding = chartWidth*.07,
+    leftPadding = chartWidth*.03,
     rightPadding = chartWidth*.02,
     topPadding = chartHeight*.08,
     bottomPadding = chartHeight*.015,
     chartInnerWidth = chartWidth - leftPadding - rightPadding,
     chartInnerHeight = chartHeight - topPadding - bottomPadding,
     translate = "translate(" + leftPadding + "," + topPadding + ")";
-
-    // var chartWidth = window.innerWidth*0.425,
-    //     chartHeight = window.innerHeight*0.70;
-    //     leftPadding = 35,
-    //     rightPadding = 10,
-    //     topPadding = 30,
-    //     bottomPadding = 5,
-    //     chartInnerWidth = chartWidth - leftPadding - rightPadding,
-    //     chartInnerHeight = chartHeight - topPadding - bottomPadding,
-    //     translate = "translate(" + leftPadding + "," + topPadding + ")";
 
 //create a scale to size bars proportionally to frame
 var yScale = d3.scaleLinear()
@@ -49,6 +57,11 @@ function setMap(){
           .attr("class", "hoverInfo")
           .attr("fill", "#2A2C39")
           .text("Hover over country for detailed information");
+      var factInfo = d3.select("body")
+          .append("div")
+          .attr("class", "factInfo")
+          .attr("fill", "#2A2C39")
+          .text("Poverty is not just lack of income, it manifests as limited education, hunger and malnutrition, inequality, and more.");
   //mercator projection and zoom/panning
       var projection = d3.geoPatterson()
         .center([100, 25])
@@ -115,8 +128,12 @@ function joinData(asianCountries, csvData){
                   //assign all attributes and values
                   asianArray.forEach(function(attr){
                       if($.isNumeric(csvRegion[attr])){ //parse out Long_Name
-                      var val = parseFloat(csvRegion[attr]); //get csv attribute value
-                      geojsonProps[attr] = val; //assign attribute and value to geojson properties
+                        var val = parseFloat(csvRegion[attr]); //get csv attribute value
+                          if (Number.isInteger(val)){
+                            geojsonProps[attr] = val; //assign attribute and value to geojson properties
+                          }else {
+                            geojsonProps[attr] = val.toFixed(2); //to only 2 decimal places
+                          }
                     } else {
                       geojsonProps[attr] = csvRegion[attr];//assign Long_Name
                     };
@@ -153,15 +170,16 @@ function setEnumerationUnits(asianCountries, map, path, colorScale){
 
 //function to create color scale generator
 function makeColorScale(data){
+    //yellow to red color scheme
     var colorClasses = [
-      "#A1FF9A",
-      "#7ADD92",
-      "#58BB86",
-      "#3C9978",
-      "#277866",
-      "#185951",
-      "#0f4733",
-      "#062022"
+      '#ffffcc',
+      '#ffeda0',
+      '#fed976',
+      '#feb24c',
+      '#fd8d3c',
+      '#fc4e2a',
+      '#e31a1c',
+      '#b10026'
     ];
 
     //create color scale generator
@@ -193,6 +211,8 @@ function choropleth(props, colorScale){
 
 //function to create coordinated bar chart
 function setChart(csvData, colorScale){
+    var windowWidth = $(window).width();
+    if (windowWidth >=801){
     //create a second svg element to hold the bar chart
     var chart = d3.select("body")
         .append("svg")
@@ -237,9 +257,60 @@ function setChart(csvData, colorScale){
               .attr("y", chartHeight*.1)
               .attr("text-anchor", "middle")
               .attr("class", "chartTitle")
-              .text(expressed)
-              .append("a").attr("xlink:href",function(d){return "#information"});
+              .text(expressed);
     updateChart(bars, csvData.length,colorScale);
+  } else { //for smaller screens
+    //create a second svg element to hold the bar chart
+    var chart = d3.select("body")
+        .append("svg")
+        .attr("width", windowWidth*.8)
+        .attr("height", chartHeight)
+        .attr("class", "chart");
+    //create a rectangle for chart background fill
+    var chartBackground = chart.append("rect")
+        .attr("class", "chartBackground")
+        .attr("width", windowWidth*.8)
+        .attr("height", chartHeight)
+        .attr("transform", translate);
+    var barWidth = (windowWidth/csvData.length-1);
+    //set bars for each province
+    var bars = chart.selectAll(".bars")
+        .data(csvData)
+        .enter()
+        .append("rect")
+        .sort(function(a,b){
+          return b[expressed]-a[expressed] || b[expressed]-0;
+        })
+        .attr("class", function(d){
+            return "bars " + d.ADM0_A3;
+        })
+        .attr("width", windowWidth / csvData.length-1)
+        .attr("tranform", function(d){
+          return "translate("+barWidth+",0)"
+        })
+        .on("mouseover", highlight)
+        .on("mouseout", dehighlight)
+        .on("mousemove", moveLabel);
+  var desc = bars.append("desc")
+          .text('{"stroke": "none", "stroke-width": "0px"}');
+      //create vertical axis generator
+      var yAxis = d3.axisLeft()
+          .scale(yScale)
+          .tickSize(0);
+      //place axis
+      var axis = chart.append("g")
+          .attr("class", "axis")
+          .attr("transform", translate)
+          .call(yAxis);
+      //create chart title
+      var chartTitle = chart.append("text")
+              .attr("x", windowWidth*.5)
+              .attr("y", chartHeight*.1)
+              .attr("text-anchor", "middle")
+              .attr("class", "chartTitle")
+              .text(expressed);
+    updateChart(bars, csvData.length,colorScale);
+  }
 };//end of setChart
 
 //function to create a dropdown menu for attribute selection
@@ -322,16 +393,34 @@ function changeAttribute(attribute, csvData){
         })
         .duration(1500);
       updateChart(bars, csvData.length,colorScale);
+    //update factInfo
+    if (expressed == "% Poverty ($1.90 a day)"){
+      d3.select(".factInfo").text("767 million people live below the international poverty line of $1.90 a day.")
+    } else if (expressed =="% National Poverty" ){
+      d3.select(".factInfo").text("The overwhelming majority of people living below the poverty line belong to Southern Asia and sub-Saharan Africa.")
+    } else if (expressed =="% Primary Children Out of School" ){
+      d3.select(".factInfo").text("Enrollment in primary education in developing countries has reached 91%, but 57 million children remain out of school.")
+    } else if (expressed =="% Female Primary Children Out of School" ){
+      d3.select(".factInfo").text("103 million youth worldwide lack basic literacy skills, and more than 60% of them are women.")
+    } else if (expressed =="% Prevalance of Undernourishment" ){
+      d3.select(".factInfo").text("One in four children under age five in the world has inadequate height for his or her age.")
+    } else if (expressed =="Human Development Rank" ){
+      d3.select(".factInfo").text("High poverty rates are often found in small, fragile and conflict affected countries.")
+    } else if (expressed =="Human Development Index" ){
+      d3.select(".factInfo").text("Inequality harms growth and poverty reduction.")
+    } else if (expressed =="GNI per capita" ){
+      d3.select(".factInfo").text("Poverty eradication is only possible through stable and well-paid jobs.")
+    };
+
 };//end of changeAttribute
 
 //function to position, size, and color bars in chart
 function updateChart(bars, n, colorScale){
-    //window size listener
-    var size = window.matchMedia("(max-width: 800px)");
-    if (size = false){
+    var windowWidth = $(window).width();
+    if (windowWidth >= 801){
       //position bars
       bars.attr("x", function(d, i){
-            return i * (chartInnerWidth / n) + leftPadding;
+            return (i * (chartInnerWidth / n)) + leftPadding;
           })
           //resize bars
           .attr("height", function(d, i){
@@ -361,7 +450,7 @@ function updateChart(bars, n, colorScale){
     } else {
     //position bars for mobile screens
     bars.attr("x", function(d, i){
-          return (i * (chartWidth / n)) +leftPadding;
+          return (i * (windowWidth / n)) +leftPadding;
         })
         //resize bars
         .attr("height", function(d, i){
@@ -424,9 +513,10 @@ function dehighlight(props){
 
 //function to create dynamic label
 function setLabel(props, csvData){
-    //label content
+  //label content
     var labelAttribute = "<h1>" + props[expressed] +
         "</h1><b>" + expressed + "</b>";
+
     //create info label div
     var infolabel = d3.select("body")
         .append("div")
