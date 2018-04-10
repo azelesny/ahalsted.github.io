@@ -142,7 +142,8 @@ body h2{
 }
 .chart {
     float: right;
-    margin: 7px 20px 0 0;
+    margin: 7px 10px 0 0px;
+    padding-left: 20px;
 }
 
 .chartTitle {
@@ -195,7 +196,7 @@ body h2{
   text-align: center;
   border: medium solid #e5e3e3;
   background-color:#efeded;
-  opacity: 0.8;
+  opacity: 0.7;
 }
 .dropdown {
     position: absolute;
@@ -224,6 +225,7 @@ option {
     border-radius: 10px;
     top: -75px;
     font-family: 'Lato', sans-serif;
+    z-index: 11;
 }
 
 .infolabel h1 {
@@ -257,6 +259,7 @@ body h2 button:hover{
   top: 0;
   left: 0;
   background-color:#290009;
+  overflow-y: scroll;
 }
 .close {
   width: 70px;
@@ -293,10 +296,12 @@ body h2 button:hover{
   font-family: 'Lato', sans-serif;
   color: #fff;
 }
+
 .overlay-data a:link{
   font-size: 1em;
   font-family: 'Lato', sans-serif;
   color: #feb24c;
+  word-wrap: break-word;
 }
 .overlay-data a:visited{
   font-size: 1em;
@@ -397,9 +402,10 @@ body h2 button:hover{
 }
 
 /* ==========================================================================
-   EXAMPLE Media Queries for Responsive Design.
-   These examples override the primary ('mobile first') styles.
-   Modify as content requires.
+  Adjustment for mobile and smallers devices
+  Push chart below map so they can both be full width of screen
+  Also remove hoover info svg
+  General adjustments to size, padding and margins of label and chart
    ========================================================================== */
  @media only screen and (max-width: 800px) {
      .map {
@@ -411,8 +417,8 @@ body h2 button:hover{
      .chartBackground {
          float: none;
          margin: 2px 0 0 2px;
-         width: 100%;
-         padding-left: 10px;
+         width: 90%;
+         padding-left: 30px;
          padding-bottom: 20px;
      }
      body h1,
@@ -439,6 +445,13 @@ body h2 button:hover{
        font-weight: bold;
        padding: 2px;
        border: 1px solid #999;
+     }
+     .infolabel h1 {
+         margin: 1px 1px 0 1px;
+         padding: 1px;
+         display: inline;
+         line-height: 1em;
+         font-family: 'Lato', sans-serif;
      }
      .hoverInfo{
        display: none;
