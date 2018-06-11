@@ -1,5 +1,7 @@
 # azelesny.github.io
 
+Portfolio Page and more information available at 
+
 UWisc-Madison: Geography 575: Interactive Cartography & Geovisualization
 Lab #1: Leaflet map available at (https://azelesny.github.io/leafletProject.html) 
 Lab #2: D3 Map with coordinated visualizations on map and chart. Available at (https://azelesny.github.io/leafletProject.html)
