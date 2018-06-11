@@ -97,148 +97,32 @@ textarea {
    Author's custom styles
    ========================================================================== */
 body{
-     background-color: #dfdce3;
-     margin-bottom: 60px;
+    font-family: 'Lato', sans-serif;
 }
-
-.hero-image{
-    background-image: url(../img/aged-blocks-bricks-761142.jpg);
-    height: 25%;
-    /* opacity: .8; */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
+.card-text{
+    font-size: .9em;
 }
-#header{
-    text-align: center;
-    padding-top: 4em;
-    padding-bottom: 2em;
-    z-index: 2;
-    position: relative;
-}
-h1{
-     font-family: 'Titillium Web', sans-serif;
-     font-size: 7em;
-     padding-left: 20px;
-     font-weight: 900;
-     display: block;
-     color: rgba(209, 195, 195, 0.8);
-     -webkit-text-stroke: 1px darkslategrey;
-}
-
-h2{
-     text-align: center;
-     font-family: 'Titillium Web', sans-serif;
-     font-weight: 700;
-     font-size: 2em;     
-  }
-#textHolder{
-     font-family: 'Titillium Web', sans-serif;
-     font-weight: 700;
-     font-size: 3em;
-     color: rgba(209, 195, 195, 0.911);
-     margin: 0;
-}
-
 
 .social{
-    padding: 0;
-    overflow: hidden;
-    position: absolute;
-    right: 4.1%;
-    text-align: right;
-    z-index: 1;
-}
-
-ul#social-li{
-    padding: 0px;
-    margin: 0px;
-    list-style: none;
-}
-
-ul#social-li li{
-    display: inline;
+    display: block;
     margin: 10px;
+    text-align: left;
 }
 
-.fa {
-    padding-top: 10px;
-    font-size: 60px;
-    width: 40px;
-    text-decoration: none;
-    color:#f38630;
+.social-li li{
+    display: inline-block;
 }
-
-  /* Add a hover effect */
-.fa:hover {
-      opacity: 0.9;
-      color: #0daa27;
-      text-decoration-line: none;
-}
-
-#header .caption{
-    padding-top: 10px;
-    z-index: 1;
-    position: relative;
-
-} 
-#header .caption span{
-    font-size: 2em;
-}
-#intro-text{
-    padding-top:100px;
-    padding-left: 200px;
-    padding-right: 200px;
-    padding-bottom: 50px; 
-}
-
-
-div p{
-    font-family: 'Roboto Slab', serif;
-     margin: 10px;
-}
-
-.intro{
-    margin: 10px;
-    font-family: 'Roboto Slab', serif;
-    font-size: 1.5em;
-}
-
 a{
-    font-family: 'Roboto Slab', serif;
-    color:#f38630;
+    color: seagreen;
 }
-a:hover {
-    opacity: 0.9;
-    color: #0daa27;
-    text-decoration-line: none;
+a:hover{
+    color:darkorange;
+    text-decoration:none; 
 }
 
-img{
-     display: block;
-     width: 85%;
-     vertical-align: middle;
-     margin-left: auto;
-     margin-right: auto;
-     transition: transform .2s; /* Animation */
-}
-img:hover {
-    transform: scale(1.5);
-    z-index: 50;
-}
 
-.footer {
-     position: relative;
-     bottom: 0;
-     width: 100%;
-     height: 60px; /* Set the fixed height of the footer here */
-     line-height: 60px; /* Vertically center the text there */
-     /* background-color: #f38630; */
-     font-family: 'Roboto Slab', serif;
-     font-weight: bold;
-     margin-top: 30px;
-}
+
+
 
 
 /* ==========================================================================
@@ -331,34 +215,8 @@ img:hover {
    Modify as content requires.
    ========================================================================== */
 
-@media only screen and (max-width: 800px) {
+@media only screen and (min-width: 35em) {
     /* Style adjustments for viewports that meet the condition */
-    #intro-text{
-        padding: 50px;
-    }
-    .intro{
-        margin: 10px;
-        font-family: 'Roboto Slab', serif;
-        font-size: 1em;
-    }
-    #header{
-        text-align: center;
-        z-index: 2;
-        position: relative;
-    }
-    h1{
-         font-family: 'Titillium Web', sans-serif;
-         font-size: 5em;
-         text-align: center;
-         font-weight: 900;
-         display: block;
-         color: rgba(209, 195, 195, 0.8);
-         -webkit-text-stroke: 1px darkslategrey;
-    }
-    h2{
-        font-size: 1.5em;
-    }
-    
 }
 
 @media print,
@@ -367,6 +225,7 @@ img:hover {
        (min-resolution: 120dpi) {
     /* Style adjustments for high resolution devices */
 }
+
 
 /* ==========================================================================
    Print styles.
