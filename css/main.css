@@ -99,6 +99,9 @@ textarea {
 body{
     font-family: 'Lato', sans-serif;
 }
+.nav-link{
+    font-size: 2em;
+}
 .card-text{
     font-size: .9em;
 }
