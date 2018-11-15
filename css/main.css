@@ -122,8 +122,8 @@ textarea {
 
 .nav-masthead .nav-link:hover,
 .nav-masthead .nav-link:focus {
-    color: olivedrab;
-    border-bottom-color: olivedrab;
+    color:#BFE5E6;
+    border-bottom-color:#BFE5E6;
 }
 
 .nav-masthead .nav-link + .nav-link {
@@ -132,7 +132,7 @@ textarea {
 
 .nav-masthead .active {
     color: black;
-    border-bottom-color: darkorange;
+    border-bottom-color:#4DC3C7;
 }
 
 @media (min-width: 48em) {
@@ -159,7 +159,7 @@ body{
     font-weight: 300;
     font-size: 3em;
 }
-@media (max-width: 500px){
+@media (max-width:450px){
     .jumbotron-fluid{
         background-image: url(../img/title_imageStretch.jpg);
         background-repeat: no-repeat;
@@ -181,13 +181,12 @@ a{
     color: black;
 }
 a:hover{
-    color:darkorange;
+    color:#4DC3C7;
     text-decoration:none; 
 }
 footer{
     background-color: grey;
 }
-
 
 
 
