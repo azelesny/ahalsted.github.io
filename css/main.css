@@ -193,7 +193,11 @@ a:hover{
 footer{
     background-color: #81D0D4;
 }
-
+@media (max-width: 767px){
+    #resume div.col-md.text-right{
+        text-align: left!important;
+    }
+}
 
 
 
