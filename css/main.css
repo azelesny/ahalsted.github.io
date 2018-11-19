@@ -175,7 +175,13 @@ body{
 }
 .social-li li{
     display: inline-block;
-    margin: 1.5em;
+}
+.social-li li a{
+    color: white;
+}
+.social-li li a:hover{
+    color:#4DC3C7;
+    text-decoration:none; 
 }
 a{
     color: black;
@@ -185,7 +191,7 @@ a:hover{
     text-decoration:none; 
 }
 footer{
-    background-color: grey;
+    background-color: #81D0D4;
 }
 
 
