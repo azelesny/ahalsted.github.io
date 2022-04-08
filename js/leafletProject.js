@@ -290,11 +290,6 @@ function createMap(){
     var osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>'}),
 
-        high = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-          id: 'mapbox.high-contrast',
-          accessToken: 'pk.eyJ1IjoiYXplbGVzbnl3aXNjIiwiYSI6ImNpc2c1cGViczAxcDIyeXZvZWp0OGFwNWQifQ.lgxgyzCrnpDPitrPWBS9jg'}),
-
         hot = L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
         	attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'});
       //create the map, limit zoom and panning
@@ -304,14 +299,13 @@ function createMap(){
           minZoom: 4,
           maxZoom: 9,
           maxBounds: [[35.023974, 61.357810],[-40.916196, -30.378981]],
-          layers: [high]
+          layers: [osm]
       });
 
     //call getData function
     getData(map);
     //assign names to baselayers
     var baseLayers={
-      "High Contrast" : high,
       "Open Street Map" : osm,
       "Humanitarian OSM" : hot,
     };
